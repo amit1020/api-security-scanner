@@ -32,3 +32,12 @@ def Get_Scan_Status(ScanID):
         return response.json().get('status')
     
     
+def get_result(target_url):
+    results_url = f"{OWASP_ZAP_URL}/JSON/core/view/alerts/?baseurl={target_url}"
+    response = requests.get(results_url)
+    alerts = response.json().get("alerts", [])
+    # Save the results to a JSON file  
+    with open("results.json", "w") as fp:
+        json.dump(alerts, fp, indent=4)
+        
+    return alerts
