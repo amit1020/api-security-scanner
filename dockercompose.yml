@@ -7,9 +7,11 @@ services:
     command: zap.sh -daemon -host 0.0.0.0 -port 8080 -config api.key=your-secure-api-key
 
   django:
-    build: amit1020/amit-django-api-server
+    build: amit1020/amit1020-django-api-server
     container_name: django-scanner
     ports:
       - "8000:8000"
+    volumes:
+      - .:/app
     depends_on:
       - zap
