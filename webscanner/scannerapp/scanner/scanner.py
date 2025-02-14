@@ -1,6 +1,6 @@
 import requests,json,time
 
-ZAP_URL = "http://localhost:8080"
+ZAP_URL = "http://zap:8080"
 
 
 def start_scan(target_url):
