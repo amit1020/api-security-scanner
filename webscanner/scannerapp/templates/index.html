@@ -12,19 +12,24 @@
         <p>Scan Started for {{ target_url }}</p>
         <p>Scan ID: <b>{{ scan_id }}</b></p>
         <p>Progress: <span id="scan-status">Checking...</span></p>
-
+    
         <script>
+            console.log("✅ Scan started! ID:", "{{ scan_id }}");
+    
             function checkStatus() {
                 fetch(`/scan_status/{{ scan_id }}/`)
                 .then(response => response.json())
                 .then(data => {
+                    console.log("📊 Scan Status:", data);
                     document.getElementById("scan-status").innerText = data.status + "%";
                     if (data.status < 100) {
                         setTimeout(checkStatus, 3000);
                     } else {
+                        console.log("✅ Scan Complete! Redirecting...");
                         window.location.href = "/scan_results?target_url={{ target_url }}";
                     }
-                });
+                })
+                .catch(error => console.error("❌ Error fetching scan status:", error));
             }
             checkStatus();
         </script>
@@ -35,5 +40,6 @@
             <button type="submit">Start Scan</button>
         </form>
     {% endif %}
+    
 </body>
 </html>
