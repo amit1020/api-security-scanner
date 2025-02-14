@@ -18,7 +18,7 @@ services:
 
 
   django:
-    build: . #amit1020/amit1020-django-api-server
+    build: amit1020/amit-django-api-server
     container_name: django-scanner
     ports:
       - "8000:8000"
