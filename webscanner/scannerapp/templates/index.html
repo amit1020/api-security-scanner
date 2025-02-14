@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Security Scanner</title>
+</head>
+<body>
+    <h1>API Security Scanner</h1>
+
+    {% if scan_id %}
+        <p>Scan Started for {{ target_url }}</p>
+        <p>Scan ID: <b>{{ scan_id }}</b></p>
+        <p>Progress: <span id="scan-status">Checking...</span></p>
+
+        <script>
+            function checkStatus() {
+                fetch(`/scan_status/{{ scan_id }}/`)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("scan-status").innerText = data.status + "%";
+                    if (data.status < 100) {
+                        setTimeout(checkStatus, 3000);
+                    } else {
+                        window.location.href = "/scan_results?target_url={{ target_url }}";
+                    }
+                });
+            }
+            checkStatus();
+        </script>
+    {% else %}
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Start Scan</button>
+        </form>
+    {% endif %}
+</body>
+</html>
