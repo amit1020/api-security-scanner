@@ -23,4 +23,12 @@ def Start_Scanning(target_url):
         print(f"Error: {e}")
         return None 
     
+   
+# Get the status of the scanning process 
+def Get_Scan_Status(ScanID):
+    status_url = f"{OWASP_ZAP_URL}/JSON/ascan/view/status/?scanId={ScanID}"
+    response = requests.get(status_url)
+    if response.status_code == 200:
+        return response.json().get('status')
+    
     
